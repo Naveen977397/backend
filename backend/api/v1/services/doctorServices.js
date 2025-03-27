@@ -36,3 +36,4 @@ export const getDoctorById = async (id) => {
         }
     }
 }
+

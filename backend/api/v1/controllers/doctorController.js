@@ -3,6 +3,7 @@ import { getAllDoctors } from '../services/doctorServices.js';
 
 import { getDoctorById } from '../services/doctorServices.js';
 
+
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -32,4 +33,5 @@ router.get('/:id', async (req, res) => {
     }
 });
 export default router;
+
 
