@@ -10,20 +10,22 @@ export const approveAppointment = async (appointment_id) => {
        RETURNING *`,
       ["approved", appointment_id, "pending"]
     );
-
+    console.log(result.rows[0]);
     if (result.rowCount === 0) {
       return {
         success: false,
         message: "No pending appointments found.",
       };
     }
-    const { appointment_date, appointment_time, doctor_id } = result.rows[0];
+    const { appointment_date, appointment_time, doctor_id, user_email } = result.rows[0];
+    console.log("email id is :",user_email);
     return {
       success: true,
       message: "Appointment approved.",
       appointment_date,
       appointment_time,
       doctor_id,
+      user_email
     };
   } catch (err) {
     console.error("Error in approveAppointment:", err);
@@ -34,7 +36,6 @@ export const approveAppointment = async (appointment_id) => {
   }
 };
 
-// ✅ Decline all conflicting appointments
 export const updateSameTimeAppointments = async (appointment_date, appointment_time, doctor_id) => {
   try {
     const result = await pool.query(

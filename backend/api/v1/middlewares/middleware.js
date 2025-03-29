@@ -1,6 +1,6 @@
 export const ensureAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
-      return next(); // User is authenticated, proceed to the next middleware
+      return next(); 
     }
     res.status(401).json({ message: "Unauthorized. Please log in." });
   };
@@ -12,6 +12,6 @@ export const ensureAuthenticated = (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized. Please log in." });
     }
   
-    req.user_email = user_email; // Attach email to request
+    req.user_email = user_email; 
     next(); 
   };

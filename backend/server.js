@@ -5,13 +5,13 @@ import api from './api/index.js';
 import passport from './api/v1/services/passport.js';
 import session from 'express-session';
 import pool from './api/db/index.js';
-// import passport from 'passport';
+
 dotenv.config();
 const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: ["http://localhost:3002","http://localhost:3001"],  
+    origin: ["http://localhost:3000","http://localhost:3001"],  
     credentials: true 
 }));
 

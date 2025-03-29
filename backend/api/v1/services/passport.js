@@ -2,7 +2,11 @@ import passport from "passport";
 import {Strategy as LocalStrategy} from "passport-local";
 import bcrypt from "bcryptjs";
 import { finduserbyEmail } from "./uerServices.js";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import pool from '../../db/index.js'
+import dotenv from 'dotenv'
 
+dotenv.config()
 passport.use(new LocalStrategy({
     usernameField: 'email',
 },
@@ -22,6 +26,31 @@ passport.use(new LocalStrategy({
     }
   })
 );
+
+passport.use(new GoogleStrategy(
+      {
+        callbackURL: process.env.GOOGLE_CALLBACK,
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        const email = profile._json.email;
+        const result = await pool.query(
+          `select * from users where email = $1 `,
+          [email]
+        );
+        if (result.rowCount === 0) {
+          const user = await pool.query(
+            `INSERT INTO USERS (user_name , email ) values ($1,$2) returning *`,
+            [profile.displayName, email]
+          );
+          done(null, user.rows[0]);
+        } else {
+          done(null, result.rows[0]);
+        }
+      }
+    )
+  );
 
 passport.serializeUser((user,done)=>{
     console.log("serialize user");
