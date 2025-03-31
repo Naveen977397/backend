@@ -20,7 +20,12 @@ export const createUser = async (user_name, email, password) => {
 };
 
 export const finduserbyEmail = async (email) => {
-    const query = `select * from users where email = $1`;
-    const response = await pool.query(query, [email]);
-    return response.rows[0];
+    try{
+        const query = `select * from users where email = $1`;
+        const response = await pool.query(query, [email]);
+        return response.rows[0];
+    }
+    catch(error){
+        console.log("error in find user by email");
+    }
 }

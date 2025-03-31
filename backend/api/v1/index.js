@@ -30,6 +30,8 @@ router.post('/logout', (req, res) => {
     req.logout(() => {
         req.session.destroy();
         res.clearCookie('connect.sid');
+        console.log('logged out');
+        
         res.send({ message: 'Logged out' });
     });
 });
@@ -51,7 +53,7 @@ router.get("/google",
   })
 );
 router.get("/google/callback", passport.authenticate("google"), (req, res) => {
-  res.redirect("http://localhost:3001/appointment");
+  res.redirect("http://localhost:3000/appointment");
 });
 
 export default router;
