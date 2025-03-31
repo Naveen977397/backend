@@ -28,4 +28,4 @@ export const finduserbyEmail = async (email) => {
     catch(error){
         console.log("error in find user by email");
     }
-}
+};

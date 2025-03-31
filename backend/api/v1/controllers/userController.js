@@ -1,8 +1,11 @@
 import {createUser, finduserbyEmail} from '../services/uerServices.js'
 import bcrypt from 'bcryptjs';
 import passport from '../services/passport.js';
+import express from 'express'
+const router = express.Router();
 
-export const signup = async (req,res) => {
+
+router.post('/signup', async (req,res) => {
     try {
         const{user_name,email,password} = req.body;
         const user = await finduserbyEmail(email);
@@ -14,10 +17,9 @@ export const signup = async (req,res) => {
     } catch (error) {
         res.status(400).send({message : error.message || "unknown error"});
     }
-};
+});
 
-
-export const login = async(req,res,next)=>{
+router.post('/login', async(req,res,next)=>{
     passport.authenticate('local',(err,user,info)=>{
         if(err){
             return res.status(500).send({message : 'internal server error'});
@@ -32,4 +34,7 @@ export const login = async(req,res,next)=>{
             return res.status(200).send({message : 'login successful'});
         });
     })(req,res,next);
-}
+});
+
+
+export default router;
